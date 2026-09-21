@@ -118,18 +118,18 @@ void KERNEL_p4_sgemm_v2_r5_EC_v4(const int M, const int N,
 void KERNEL_p_dgemm_v1_r3(const int M, const int N,
                           const int K, const double alpha, const double *A /* M x K */,
                           const int lda, const double *B /* K x N */, const int ldb,
-                          const float beta, double *C /* M x N*/, const int ldc,
+                          const double beta, double *C /* M x N*/, const int ldc,
                           gblas_quantizer& Qa, gblas_quantizer& Qb);
 
 void KERNEL_p3_dgemm_v1_r3(const int M, const int N,
                            const int K, const double alpha, const double *A /* M x K */,
                            const int lda, const double *B /* K x N */, const int ldb,
-                           const float beta, double *C /* M x N*/, const int ldc,
+                           const double beta, double *C /* M x N*/, const int ldc,
                            gblas_quantizer& Qa, gblas_quantizer& Qb);
 void KERNEL_p4_dgemm_v1_r3(const int M, const int N,
                            const int K, const double alpha, const double *A /* M x K */,
                            const int lda, const double *B /* K x N */, const int ldb,
-                           const float beta, double *C /* M x N*/, const int ldc,
+                           const double beta, double *C /* M x N*/, const int ldc,
                            gblas_quantizer& Qa, gblas_quantizer& Qb);
 
 /*

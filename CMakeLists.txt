@@ -1,11 +1,16 @@
-cmake_minimum_required(VERSION 2.6)
+cmake_minimum_required(VERSION 3.5)
 
-#SET(CMAKE_BUILD_TYPE "Release")
+SET(CMAKE_BUILD_TYPE "Release")
 #use " cmake path_to_project_srcs -DCMAKE_BUILD_TYPE=RELEASE "
 
 project(gblas)
 
-add_definitions("-fomit-frame-pointer -msse3 -ffast-math")
+add_definitions("-fomit-frame-pointer -fno-math-errno -fno-trapping-math -fno-signed-zeros")
+if(CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64|AMD64|amd64|i386|i686")
+  add_definitions("-msse3")
+else()
+  add_definitions("-I${CMAKE_SOURCE_DIR}/vendor/simde")
+endif()
 add_definitions("-Wall")
 include_directories("${CMAKE_SOURCE_DIR}/include")
 # -Wall -mfpmath=sse -ffast-math
