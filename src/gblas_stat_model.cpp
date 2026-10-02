@@ -50,8 +50,8 @@ double control_pack_packing_based_s(float max_a, float max_b, float& Ca, float& 
   const float NUM_ERR_VAR_S = (float)NUM_REPR_ERR_FLOAT_P2_ASYM;
 #endif
   
-    Ca = 1.0f/max_a * (float)sqrt(A_RANGE_S/(2.0f*GBLAS_KERNEL_SIZE));
-    Cb = 1.0f/max_b * (float)sqrt(A_RANGE_S/(2.0f*GBLAS_KERNEL_SIZE));
+    Ca = (max_a == 0.0f) ? 0.0f : 1.0f/max_a * (float)sqrt(A_RANGE_S/(2.0f*GBLAS_KERNEL_SIZE));
+    Cb = (max_b == 0.0f) ? 0.0f : 1.0f/max_b * (float)sqrt(A_RANGE_S/(2.0f*GBLAS_KERNEL_SIZE));
 
   //Ca = Cb = 1.0f; //.4f;
 #endif
@@ -219,14 +219,14 @@ void control_pack_packing_based_d(double max_a, double max_b, double* Ca, double
   const double A_RANGE_D_P4 = (double)(A_RANGE_DOUBLE_P4_ASYM);
 #endif
   
-  Ca[1] = 1.0/max_a * sqrt(A_RANGE_D_P2/(2.0*GBLAS_KERNEL_SIZE));
-  Cb[1] = 1.0/max_b * sqrt(A_RANGE_D_P2/(2.0*GBLAS_KERNEL_SIZE));
+  Ca[1] = (max_a == 0.0) ? 0.0 : 1.0/max_a * sqrt(A_RANGE_D_P2/(2.0*GBLAS_KERNEL_SIZE));
+  Cb[1] = (max_b == 0.0) ? 0.0 : 1.0/max_b * sqrt(A_RANGE_D_P2/(2.0*GBLAS_KERNEL_SIZE));
   
-  Ca[2] = 1.0/max_a * sqrt(A_RANGE_D_P3/(2.0*GBLAS_KERNEL_SIZE));
-  Cb[2] = 1.0/max_b * sqrt(A_RANGE_D_P3/(2.0*GBLAS_KERNEL_SIZE));
+  Ca[2] = (max_a == 0.0) ? 0.0 : 1.0/max_a * sqrt(A_RANGE_D_P3/(2.0*GBLAS_KERNEL_SIZE));
+  Cb[2] = (max_b == 0.0) ? 0.0 : 1.0/max_b * sqrt(A_RANGE_D_P3/(2.0*GBLAS_KERNEL_SIZE));
   
-  Ca[3] = 1.0/max_a * sqrt(A_RANGE_D_P4/(2.0*GBLAS_KERNEL_SIZE));
-  Cb[3] = 1.0/max_b * sqrt(A_RANGE_D_P4/(2.0*GBLAS_KERNEL_SIZE));
+  Ca[3] = (max_a == 0.0) ? 0.0 : 1.0/max_a * sqrt(A_RANGE_D_P4/(2.0*GBLAS_KERNEL_SIZE));
+  Cb[3] = (max_b == 0.0) ? 0.0 : 1.0/max_b * sqrt(A_RANGE_D_P4/(2.0*GBLAS_KERNEL_SIZE));
 #endif
   
   P_e[0] = 0.0;
@@ -401,14 +401,14 @@ void control_pack_packing_based_d_external_Aquant(double max_a, double max_b, do
   
   const double A_QUANT_D = (double)(Aquant);
     
-  Ca[1] = 1.0/max_a * sqrt(A_QUANT_D/(2.0*GBLAS_KERNEL_SIZE));
-  Cb[1] = 1.0/max_b * sqrt(A_QUANT_D/(2.0*GBLAS_KERNEL_SIZE));
+  Ca[1] = (max_a == 0.0) ? 0.0 : 1.0/max_a * sqrt(A_QUANT_D/(2.0*GBLAS_KERNEL_SIZE));
+  Cb[1] = (max_b == 0.0) ? 0.0 : 1.0/max_b * sqrt(A_QUANT_D/(2.0*GBLAS_KERNEL_SIZE));
   
-  Ca[2] = 1.0/max_a * sqrt(A_QUANT_D/(2.0*GBLAS_KERNEL_SIZE));
-  Cb[2] = 1.0/max_b * sqrt(A_QUANT_D/(2.0*GBLAS_KERNEL_SIZE));
+  Ca[2] = (max_a == 0.0) ? 0.0 : 1.0/max_a * sqrt(A_QUANT_D/(2.0*GBLAS_KERNEL_SIZE));
+  Cb[2] = (max_b == 0.0) ? 0.0 : 1.0/max_b * sqrt(A_QUANT_D/(2.0*GBLAS_KERNEL_SIZE));
   
-  Ca[3] = 1.0/max_a * sqrt(A_QUANT_D/(2.0*GBLAS_KERNEL_SIZE));
-  Cb[3] = 1.0/max_b * sqrt(A_QUANT_D/(2.0*GBLAS_KERNEL_SIZE));
+  Ca[3] = (max_a == 0.0) ? 0.0 : 1.0/max_a * sqrt(A_QUANT_D/(2.0*GBLAS_KERNEL_SIZE));
+  Cb[3] = (max_b == 0.0) ? 0.0 : 1.0/max_b * sqrt(A_QUANT_D/(2.0*GBLAS_KERNEL_SIZE));
 
   
   P_e[0] = 0.0;

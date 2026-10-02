@@ -11,6 +11,7 @@
 #ifndef __GBLAS_QUANTIZER_H__
 #define __GBLAS_QUANTIZER_H__
 
+#include <climits>
 #include "gblas_sse_utils.h"
 
 //#define     NOISE_FLOOR_DOUBLE            (3.1193e-011)     // (2^-34.9) //2.91038e-011 (2^-35); // double
@@ -45,15 +46,19 @@ public:
   inline int quantize_sample(const float input)
   {
     if ( input == 0.0f ) return 0;
-    if ( input > 0.0f )  return (int)(input*q_step + ZERO_DOT_FIVE);
-    return (int)(input*q_step - ZERO_DOT_FIVE);
+    double val = (input > 0.0f) ? (input*q_step + ZERO_DOT_FIVE) : (input*q_step - ZERO_DOT_FIVE);
+    if (val > (double)INT_MAX) return INT_MAX;
+    if (val < (double)INT_MIN) return INT_MIN;
+    return (int)val;
   }
   
   inline int quantize_sample(const double input)
   {
     if ( input == 0.0 ) return 0;
-    if ( input > 0.0 )  return (int)(input*q_step + ZERO_DOT_FIVE);
-    return (int)(input*q_step - ZERO_DOT_FIVE);
+    double val = (input > 0.0 ) ? (input*q_step + ZERO_DOT_FIVE) : (input*q_step - ZERO_DOT_FIVE);
+    if (val > (double)INT_MAX) return INT_MAX;
+    if (val < (double)INT_MIN) return INT_MIN;
+    return (int)val;
   }
   
   inline __m128 quantize_sample(__m128 input)

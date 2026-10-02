@@ -36,8 +36,6 @@ void row_to_block_major(const enum CBLAS_TRANSPOSE Trans, const int rows, const 
     
     if ( alpha == 1.0f )
     {
-      printf("A \n");
-
       for (int i=0, idx = 0; i < _ROWS_; i+=GBLAS_KERNEL_SIZE) // , idx = 0
       {
         for (int k = 0; k < _COLS_; k+=GBLAS_KERNEL_SIZE)
@@ -74,8 +72,6 @@ void row_to_block_major(const enum CBLAS_TRANSPOSE Trans, const int rows, const 
     }
     else
     {     
-      printf("B \n");
-      
       const __m128 ALPHA = _mm_set1_ps(alpha);
       
       for (int i=0; i < _ROWS_; i+=GBLAS_KERNEL_SIZE) // , idx = 0
@@ -122,15 +118,13 @@ void row_to_block_major(const enum CBLAS_TRANSPOSE Trans, const int rows, const 
     
     if ( alpha == 1.0f )
     {
-      printf("C \n");
-      
       a_idx = 0;
       for (int cc = 0; cc < _COLS_; cc += GBLAS_KERNEL_SIZE)
       { 
         for (int rr = 0; rr < _ROWS_; rr += GBLAS_KERNEL_SIZE)
         {
           // reset min/max
-          _max = _mm_set1_ps(-1000.f); //FLT_MAX);
+          _max = _mm_set1_ps(FLT_MIN);
           _min = _mm_set1_ps(FLT_MAX);
           
           for (int r=0; r<GBLAS_KERNEL_SIZE; r+=4)
@@ -195,8 +189,6 @@ void row_to_block_major(const enum CBLAS_TRANSPOSE Trans, const int rows, const 
     }
     else
     {
-      printf("D \n");
-
       const __m128 ALPHA = _mm_set1_ps(alpha);
       
       a_idx = 0;
@@ -286,7 +278,7 @@ void row_to_block_major(const enum CBLAS_TRANSPOSE Trans, const int rows, const 
   
   if ( Trans == CblasNoTrans )
   {
-    if ( alpha != 1.0f )
+    if ( alpha != 1.0 )
     {      
       for (int rr=0, idx = 0; rr < _ROWS_; rr += GBLAS_KERNEL_SIZE) // , idx = 0
       {
@@ -322,7 +314,7 @@ void row_to_block_major(const enum CBLAS_TRANSPOSE Trans, const int rows, const 
   else // CblasTrans
   {
     // TODO: improve this code because reads matrix jumping between lines
-    if ( alpha != 1.0f )
+    if ( alpha != 1.0 )
     {
       for (int cc = 0, idx = 0; cc < _COLS_; cc += GBLAS_KERNEL_SIZE)
       {    
@@ -363,7 +355,10 @@ void row_to_block_major(const enum CBLAS_TRANSPOSE Trans, const int rows, const 
 {
   //print_matrix_matlab_notation(m_in, rows, cols);
 
-  if ( alpha != 1.0f )
+  const int _ROWS_ = rows - (rows%GBLAS_KERNEL_SIZE);
+  const int _COLS_ = cols - (cols%GBLAS_KERNEL_SIZE);
+
+  if ( alpha != 1.0 )
   {
     // alpha is different than 1.0f, so a multiply is needed
     if ( Trans == CblasTrans )
@@ -372,9 +367,9 @@ void row_to_block_major(const enum CBLAS_TRANSPOSE Trans, const int rows, const 
       double temp;
       int b_idx = 0;
       int idx = 0;
-      for (int n = 0; n < cols; n+=GBLAS_KERNEL_SIZE)
+      for (int n = 0; n < _COLS_; n+=GBLAS_KERNEL_SIZE)
       {    
-        for (int k = 0; k < rows; k+=GBLAS_KERNEL_SIZE)
+        for (int k = 0; k < _ROWS_; k+=GBLAS_KERNEL_SIZE)
         {
           _max = DBL_MIN;
           _min = DBL_MAX;
@@ -409,9 +404,9 @@ void row_to_block_major(const enum CBLAS_TRANSPOSE Trans, const int rows, const 
       __m128d temp;
       int a_idx = 0;
       
-      for (int i=0, idx = 0; i < rows; i+=GBLAS_KERNEL_SIZE) // , idx = 0
+      for (int i=0, idx = 0; i < _ROWS_; i+=GBLAS_KERNEL_SIZE) // , idx = 0
       {
-        for (int k=0; k < cols; k+=GBLAS_KERNEL_SIZE)
+        for (int k=0; k < _COLS_; k+=GBLAS_KERNEL_SIZE)
         {
           // reset counter
           _max = _mm_set1_pd(DBL_MIN);
@@ -445,9 +440,9 @@ void row_to_block_major(const enum CBLAS_TRANSPOSE Trans, const int rows, const 
       double temp;
       int b_idx = 0;
       int idx = 0;
-      for (int n = 0; n < cols; n+=GBLAS_KERNEL_SIZE)
+      for (int n = 0; n < _COLS_; n+=GBLAS_KERNEL_SIZE)
       {    
-        for (int k = 0; k < rows; k+=GBLAS_KERNEL_SIZE)
+        for (int k = 0; k < _ROWS_; k+=GBLAS_KERNEL_SIZE)
         {
           _max = DBL_MIN;
           _min = DBL_MAX;
@@ -478,9 +473,9 @@ void row_to_block_major(const enum CBLAS_TRANSPOSE Trans, const int rows, const 
       __m128d temp;
       int a_idx = 0;
       
-      for (int i=0, idx = 0; i < rows; i+=GBLAS_KERNEL_SIZE) // , idx = 0
+      for (int i=0, idx = 0; i < _ROWS_; i+=GBLAS_KERNEL_SIZE) // , idx = 0
       {
-        for (int k=0; k < cols; k+=GBLAS_KERNEL_SIZE)
+        for (int k=0; k < _COLS_; k+=GBLAS_KERNEL_SIZE)
         {
           // reset counter
           _max = _mm_set1_pd(DBL_MIN);
@@ -518,7 +513,7 @@ void row_to_block_major(const enum CBLAS_TRANSPOSE Trans, const int rows, const 
   
   if ( Trans == CblasTrans )
   {
-    if ( alpha != 1.0f )
+    if ( alpha != 1.0 )
     {
       for (int n = 0, idx = 0; n < _COLS_; n+=GBLAS_KERNEL_SIZE)
       {    
@@ -553,7 +548,7 @@ void row_to_block_major(const enum CBLAS_TRANSPOSE Trans, const int rows, const 
   }
   else
   {
-    if ( alpha != 1.0f )
+    if ( alpha != 1.0 )
     {
       const __m128d ALPHA = _mm_set1_pd(alpha);
       for (int i=0, idx = 0; i < _ROWS_; i+=GBLAS_KERNEL_SIZE)

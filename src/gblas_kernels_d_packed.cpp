@@ -25,7 +25,7 @@
 void KERNEL_p_dgemm_v1_r3(const int M, const int N,
                           const int K, const double alpha, const double *A /* M x K */,
                           const int lda, const double *B /* K x N */, const int ldb,
-                          const float beta, double *C /* M x N*/, const int ldc,
+                          const double beta, double *C /* M x N*/, const int ldc,
                           gblas_quantizer& Qa, gblas_quantizer& Qb)
 {
   __m128d cmp, disp;                              // unpacking!
@@ -39,8 +39,8 @@ void KERNEL_p_dgemm_v1_r3(const int M, const int N,
 //  double *A_p = (double*)_mm_malloc(sizeof(double)*(KERNEL_SIZE >> 1)*KERNEL_SIZE, 16);
 //  double *B_p = (double*)_mm_malloc(sizeof(double)*KERNEL_SIZE*KERNEL_SIZE, 16);
 
-  static double A_p[(GBLAS_KERNEL_SIZE >> 1)*GBLAS_KERNEL_SIZE] __attribute__ ((aligned (16)));
-  static double B_p[GBLAS_KERNEL_SIZE*GBLAS_KERNEL_SIZE] __attribute__ ((aligned (16)));
+  double A_p[(GBLAS_KERNEL_SIZE >> 1)*GBLAS_KERNEL_SIZE] __attribute__ ((aligned (16)));
+  double B_p[GBLAS_KERNEL_SIZE*GBLAS_KERNEL_SIZE] __attribute__ ((aligned (16)));
   
   const __m128d __eps      = _mm_set1_pd(EPS);
   const __m128d __inv_eps  = _mm_set1_pd(INV_EPS);
@@ -238,7 +238,7 @@ void KERNEL_p_dgemm_v1_r3(const int M, const int N,
 void KERNEL_p3_dgemm_v1_r3(const int M, const int N,
                           const int K, const double alpha, const double *A /* M x K */,
                           const int lda, const double *B /* K x N */, const int ldb,
-                          const float beta, double *C /* M x N*/, const int ldc,
+                          const double beta, double *C /* M x N*/, const int ldc,
                           gblas_quantizer& Qa, gblas_quantizer& Qb)
 {  
   __m128d cmp, disp;                              // unpacking!
@@ -252,8 +252,8 @@ void KERNEL_p3_dgemm_v1_r3(const int M, const int N,
 //  double *A_p = (double*)_mm_malloc(sizeof(double)*(KERNEL_SIZE/3)*KERNEL_SIZE, 16);
 //  double *B_p = (double*)_mm_malloc(sizeof(double)*KERNEL_SIZE*KERNEL_SIZE, 16);
 
-  static double A_p[(GBLAS_KERNEL_SIZE/3)*GBLAS_KERNEL_SIZE] __attribute__ ((aligned (16)));
-  static double B_p[GBLAS_KERNEL_SIZE*GBLAS_KERNEL_SIZE] __attribute__ ((aligned (16)));
+  double A_p[(GBLAS_KERNEL_SIZE/3)*GBLAS_KERNEL_SIZE] __attribute__ ((aligned (16)));
+  double B_p[GBLAS_KERNEL_SIZE*GBLAS_KERNEL_SIZE] __attribute__ ((aligned (16)));
   
   const __m128d __eps       = _mm_set1_pd(EPS);
   const __m128d __eps_pow_2 = _mm_set1_pd(EPS*EPS);
@@ -498,7 +498,7 @@ void KERNEL_p3_dgemm_v1_r3(const int M, const int N,
 void KERNEL_p4_dgemm_v1_r3(const int M, const int N,
                            const int K, const double alpha, const double *A /* M x K */,
                            const int lda, const double *B /* K x N */, const int ldb,
-                           const float beta, double *C /* M x N*/, const int ldc,
+                           const double beta, double *C /* M x N*/, const int ldc,
                            gblas_quantizer& Qa, gblas_quantizer& Qb)
 {
   __m128d cmp, disp;                              // unpacking!
@@ -512,8 +512,8 @@ void KERNEL_p4_dgemm_v1_r3(const int M, const int N,
 //  double *A_p = (double*)_mm_malloc(sizeof(double)*(KERNEL_SIZE/4)*KERNEL_SIZE, 16);
 //  double *B_p = (double*)_mm_malloc(sizeof(double)*KERNEL_SIZE*KERNEL_SIZE, 16);
 
-  static double A_p[(GBLAS_KERNEL_SIZE >> 2)*GBLAS_KERNEL_SIZE] __attribute__ ((aligned (16)));
-  static double B_p[GBLAS_KERNEL_SIZE*GBLAS_KERNEL_SIZE] __attribute__ ((aligned (16)));
+  double A_p[(GBLAS_KERNEL_SIZE >> 2)*GBLAS_KERNEL_SIZE] __attribute__ ((aligned (16)));
+  double B_p[GBLAS_KERNEL_SIZE*GBLAS_KERNEL_SIZE] __attribute__ ((aligned (16)));
   
   const __m128d __eps       = _mm_set1_pd(EPS);
   const __m128d __eps_pow_2 = _mm_set1_pd(EPS*EPS);
@@ -806,8 +806,8 @@ void KERNEL_p_dgemm_v2_r4(const int M, const int N,
   const double INV_EPS              = ceil(2.0*TIGHT_PACKING_A_MAX + DELTA);
   const double EPS                  = 1.0/INV_EPS;
   
-  static double A_p[(GBLAS_KERNEL_SIZE >> 1)*GBLAS_KERNEL_SIZE] __attribute__ ((aligned (16)));
-  static double B_p[(GBLAS_KERNEL_SIZE >> 1)*GBLAS_KERNEL_SIZE] __attribute__ ((aligned (16)));
+  double A_p[(GBLAS_KERNEL_SIZE >> 1)*GBLAS_KERNEL_SIZE] __attribute__ ((aligned (16)));
+  double B_p[(GBLAS_KERNEL_SIZE >> 1)*GBLAS_KERNEL_SIZE] __attribute__ ((aligned (16)));
   
   //double *A_p = (double*)_mm_malloc(sizeof(double)*(KERNEL_SIZE >> 1)*KERNEL_SIZE, 16);
   //double *B_p = (double*)_mm_malloc(sizeof(double)*(KERNEL_SIZE >> 1)*KERNEL_SIZE, 16);
@@ -981,8 +981,8 @@ void KERNEL_p3_dgemm_v2_r4(const int M, const int N,
   const double INV_EPS              = ceil(2.0*TIGHT_PACKING_A_MAX + DELTA);
   const double EPS                  = 1.0/INV_EPS;
   
-  static double A_p[(GBLAS_KERNEL_SIZE/3)*GBLAS_KERNEL_SIZE] __attribute__ ((aligned (16)));
-  static double B_p[(GBLAS_KERNEL_SIZE/3)*GBLAS_KERNEL_SIZE] __attribute__ ((aligned (16)));
+  double A_p[(GBLAS_KERNEL_SIZE/3)*GBLAS_KERNEL_SIZE] __attribute__ ((aligned (16)));
+  double B_p[(GBLAS_KERNEL_SIZE/3)*GBLAS_KERNEL_SIZE] __attribute__ ((aligned (16)));
      
   for ( int k = 0, kh = 0; k < GBLAS_KERNEL_SIZE*GBLAS_KERNEL_SIZE; k+=3, kh++ )
   {
@@ -1126,8 +1126,8 @@ void KERNEL_p4_dgemm_v2_r4(const int M, const int N,
   const double INV_EPS              = ceil(2.0*TIGHT_PACKING_A_MAX + DELTA);
   const double EPS                  = 1.0/INV_EPS;
   
-  static double A_p[(GBLAS_KERNEL_SIZE >> 2)*GBLAS_KERNEL_SIZE] __attribute__ ((aligned (16)));
-  static double B_p[(GBLAS_KERNEL_SIZE >> 2)*GBLAS_KERNEL_SIZE] __attribute__ ((aligned (16)));
+  double A_p[(GBLAS_KERNEL_SIZE >> 2)*GBLAS_KERNEL_SIZE] __attribute__ ((aligned (16)));
+  double B_p[(GBLAS_KERNEL_SIZE >> 2)*GBLAS_KERNEL_SIZE] __attribute__ ((aligned (16)));
   
   __m128d acc0, acc1;
   const __m128d A_eps0 = _mm_set_pd(EPS, 1.0);

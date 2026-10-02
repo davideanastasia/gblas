@@ -14,7 +14,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#if defined(__SSE2__) || defined(__x86_64__) || defined(_M_X64) || defined(_M_AMD64)
 #include <xmmintrin.h>
+#else
+#define SIMDE_ENABLE_NATIVE_ALIASES
+#include "simde/x86/sse.h"
+#endif
 
 #include "gblas.h"
 

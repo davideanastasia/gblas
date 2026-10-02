@@ -13,15 +13,35 @@
 
 #define   ZERO_DOT_FIVE     (0.5)
 
-//#if __ppc__ || __ppc7400__ || __ppc64__ || __ppc970__
-//#include <ppc_intrinsics.h>
-//#elif __i386__ || __x86_64__
+#if defined(__SSE2__) || defined(__x86_64__) || defined(_M_X64) || defined(_M_AMD64)
 #include <emmintrin.h>
 #include <pmmintrin.h>
-//#include <tmmintrin.h>
-//#else
-//#error unsupported architecture
-//#endif
+#else
+#define SIMDE_ENABLE_NATIVE_ALIASES
+#include "simde/x86/sse2.h"
+#include "simde/x86/sse3.h"
+
+#include <cstdlib>
+#include <cstdint>
+static inline void* _mm_malloc(size_t size, size_t alignment) {
+  void* ptr = nullptr;
+#if defined(_MSC_VER)
+  ptr = _aligned_malloc(size, alignment);
+#elif defined(__APPLE__)
+  posix_memalign(&ptr, alignment, size);
+#else
+  ptr = aligned_alloc(alignment, size);
+#endif
+  return ptr;
+}
+static inline void _mm_free(void* ptr) {
+#if defined(_MSC_VER)
+  _aligned_free(ptr);
+#else
+  free(ptr);
+#endif
+}
+#endif
 
 static const __m128d  _MM_ZERO_D          = _mm_setzero_pd();
 static const __m128   _MM_ZERO_S          = _mm_setzero_ps();
@@ -29,6 +49,8 @@ static const __m128d  _MM_ZERO_DOT_FIVE_D = _mm_set1_pd(0.5);
 static const __m128   _MM_ZERO_DOT_FIVE_S = _mm_set1_ps(0.5f);
 static const __m128d  _MM_MASK_ONE_D      = _mm_set1_pd(0x00000001);
 static const __m128   _MM_MASK_ONE_S      = _mm_set1_ps(0x00000001);
+
+namespace gblas {
 
 template <class T>
 T max(T v1, T v2)
@@ -41,6 +63,11 @@ T min(T v1, T v2)
 {
   return (v1 < v2)? v1 : v2;
 }
+
+} // namespace gblas
+
+using gblas::max;
+using gblas::min;
 
 inline void fast_unpack_tight_v2(__m128& i, const float& eps, const float& inv_eps)
 {  

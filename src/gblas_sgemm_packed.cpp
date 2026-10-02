@@ -123,8 +123,6 @@ int gblas_sgemm_mse(const enum CBLAS_ORDER Order, const enum CBLAS_TRANSPOSE Tra
       
       if ( Ctrl[0] > 1 )
       {        
-        std::cout << 2 << " " << max_a[0] << " " << Ca[0] << " " << max_b[0] << " " << Cb[0] << std::endl;
-
         // pack 2
         Qa.set_min_value(0);
         Qb.set_min_value(0);
@@ -144,8 +142,6 @@ int gblas_sgemm_mse(const enum CBLAS_ORDER Order, const enum CBLAS_TRANSPOSE Tra
       }
       else
       {
-        std::cerr << 1 << " " << max_a[0] << " " << 1.0 << " " << max_b[0] << " " << 1.0 << std::endl;
-        
         // standard
         KERNEL_std_sgemm_v6(GBLAS_KERNEL_SIZE, GBLAS_KERNEL_SIZE, GBLAS_KERNEL_SIZE, (1.0f), p_A, GBLAS_KERNEL_SIZE, p_B, GBLAS_KERNEL_SIZE, beta, p_C, ldc);
       }
@@ -199,6 +195,7 @@ int gblas_sgemm_mse(const enum CBLAS_ORDER Order, const enum CBLAS_TRANSPOSE Tra
   delete[] max_b;
   delete[] Ca;
   delete[] Cb;
+  delete[] P_e;
   delete[] Ctrl;
   
   return num_accelerated_block;
@@ -260,7 +257,7 @@ int gblas_sgemm_mu(const enum CBLAS_ORDER Order, const enum CBLAS_TRANSPOSE Tran
   // ---------------------------------
 #endif
   
-#pragma omp parallel for private(p_A, p_B, p_C)
+#pragma omp parallel for private(p_A, p_B, p_C) reduction(+:num_accelerated_block)
   for (int ii = 0; ii < M_blocks; ii++)  // blocks of A
   {
     

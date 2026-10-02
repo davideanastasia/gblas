@@ -76,10 +76,10 @@
 #endif
 
 // constants
-#define     SQRT_12                       (3.464101615137754f)
-#define     INV_SQRT_12                   (0.288675134594813f)
-#define     INV_12                        (0.083333333333333f)
-#define     INV_144                       (0.006944444444444f)
+#define     SQRT_12                       (3.464101615137754)
+#define     INV_SQRT_12                   (0.288675134594813)
+#define     INV_12                        (0.083333333333333)
+#define     INV_144                       (0.006944444444444)
 
 
 /* Packing control functions */
